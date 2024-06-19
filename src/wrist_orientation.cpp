@@ -21,7 +21,7 @@
 //#include "/home/ordavidro/wrist_ws/src/dynamixel_ros_library/package/dynamixel_ros_library/include/dynamixel_ros_library.h"
 //#include "/home/ordavidro/wrist_ws/src/DynamixelSDK/ros/dynamixel_sdk/include/dynamixel_sdk/dynamixel_sdk.h"
 
-dynamixelMotor motor1;
+//dynamixelMotor motor1;
 //  dynamixelMotor motor2;
 //  //dynamixelMotor motor3;
 
@@ -91,13 +91,13 @@ int main(int argc, char **argv)
     int baud_rate = atoi(argv[6]);
 
     // //dynamixelMotor motor1("motor1", dmxl_id_0);
-    motor1 = dynamixelMotor("motor1", dmxl_id_0);
-    dynamixelMotor::iniComm(port_name_0,protocol_version,baud_rate);
-    // if (!dynamixelMotor::iniComm(port_name_0, protocol_version, baud_rate)) {
-    //     ROS_ERROR("Failed to initialize communication for motor1");
-    //     return -1;
-    // }
-    motor1.setControlTable();
+   // motor1 = dynamixelMotor("motor1", dmxl_id_0);
+    //dynamixelMotor::iniComm(port_name_0,protocol_version,baud_rate);
+  //   if (!dynamixelMotor::iniComm(port_name_0, protocol_version, baud_rate)) {
+  //       ROS_ERROR("Failed to initialize communication for motor1");
+   //      return -1;
+  //   }
+  //  motor1.setControlTable();
     
     // motor2 = dynamixelMotor("motor2", dmxl_id_1);    
     // //dynamixelMotor::iniComm(port_name_1,protocol_version,baud_rate);
