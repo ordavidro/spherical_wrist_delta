@@ -12,28 +12,29 @@
 
 
   <!-- Use depend as a shortcut for packages that are both build and exec dependencies -->
-  <!-- <depend>roscpp</depend>-->
+  <depend>roscpp</depend>
+  <depend>dynamixel_sdk</depend>
   <!-- <depend>std_msgs</depend>-->
 
   <!-- Use build_depend for packages you need at compile time: -->
   <build_depend>dynamixel_ros_library</build_depend>
-  <build_depend>dynamixel_sdk</build_depend>
+  <!-- <build_depend>dynamixel_sdk</build_depend> -->
   <build_depend>dynamixel_workbench_controllers</build_depend>
   <build_depend>dynamixel_workbench_msgs</build_depend>
   <build_depend>dynamixel_workbench_operators</build_depend>
   <build_depend>dynamixel_workbench_toolbox</build_depend>
   <build_depend>message_generation</build_depend>
-  <build_depend>roscpp</build_depend>
+  <!-- <build_depend>roscpp</build_depend> -->
   <build_depend>std_msgs</build_depend>
  
   <!-- Use build_export_depend for packages you need in order to build against this package: -->
   <build_export_depend>dynamixel_ros_library</build_export_depend>
-  <build_export_depend>dynamixel_sdk</build_export_depend>
+  <!-- <build_export_depend>dynamixel_sdk</build_export_depend> -->
   <build_export_depend>dynamixel_workbench_controllers</build_export_depend>
   <build_export_depend>dynamixel_workbench_msgs</build_export_depend>
   <build_export_depend>dynamixel_workbench_operators</build_export_depend>
   <build_export_depend>dynamixel_workbench_toolbox</build_export_depend>
-  <build_export_depend>roscpp</build_export_depend>
+  <!-- <build_export_depend>roscpp</build_export_depend> -->
   <build_export_depend>std_msgs</build_export_depend>
 
   <!-- Use buildtool_depend for build tool packages: -->
@@ -41,13 +42,13 @@
   
   <!-- Use exec_depend for packages you need at runtime: -->
   <exec_depend>dynamixel_ros_library</exec_depend>
-  <exec_depend>dynamixel_sdk</exec_depend>
+  <!-- <exec_depend>dynamixel_sdk</exec_depend> -->
   <exec_depend>dynamixel_workbench_controllers</exec_depend>
   <exec_depend>dynamixel_workbench_msgs</exec_depend>
   <exec_depend>dynamixel_workbench_operators</exec_depend>
   <exec_depend>dynamixel_workbench_toolbox</exec_depend>
   <exec_depend>message_runtime</exec_depend>
-  <exec_depend>roscpp</exec_depend>
+  <!-- <exec_depend>roscpp</exec_depend> -->
   <exec_depend>std_msgs</exec_depend>
 
   <!-- Use test_depend for packages you need only for testing: -->

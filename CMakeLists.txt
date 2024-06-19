@@ -4,7 +4,7 @@ project(wrist_control)
 ##
 # If not, gives a problem with including dynamixel_sdk.h
 include_directories(/home/ordavidro/wrist_ws/src/DynamixelSDK/ros/dynamixel_sdk/include/dynamixel_sdk)
-include_directories(/home/ordavidro/wrist_ws/src/dynamixel_ros_library/package/dynamixel_ros_library/include)
+include_directories(/home/ordavidro/wrist_ws/src/dynamixel_ros_library/include)
 
 
 ## Compile as C++11, supported in ROS Kinetic and newer
@@ -16,22 +16,21 @@ add_compile_options(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS
   dynamixel_ros_library
   dynamixel_sdk
-  dynamixel_workbench_controllers
-  dynamixel_workbench_msgs
-  dynamixel_workbench_operators
-  dynamixel_workbench_toolbox
-  message_generation
-  message_runtime
+  #dynamixel_workbench_controllers
+  #dynamixel_workbench_msgs
+  #dynamixel_workbench_operators
+  #dynamixel_workbench_toolbox
+  #message_generation
+  #message_runtime
   roscpp
   std_msgs
 )
 
 ##
 catkin_package(
-  INCLUDE_DIRS ${catkin_INCLUDE_DIRS} ${${PROJECT_NAME}_INCLUDE_DIRS}
-  LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS ${${PROJECT_NAME}_DEPENDS}
+  CATKIN_DEPENDS roscpp std_msgs dynamixel_sdk dynamixel_ros_library
 )
+
 
 
 ###########
@@ -40,7 +39,6 @@ catkin_package(
 
 ## Specify additional locations of header files
 include_directories(
- include
  ${catkin_INCLUDE_DIRS}
  )
 
@@ -73,11 +71,11 @@ target_link_libraries(wrist_orientation
  )
 
 ## Mark cpp header files for installation
- install(DIRECTORY include/${PROJECT_NAME}/
-   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-   FILES_MATCHING PATTERN "*.h"
-   PATTERN ".svn" EXCLUDE
- )
+#  install(DIRECTORY include/${PROJECT_NAME}/
+#    DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+#    FILES_MATCHING PATTERN "*.h"
+#    PATTERN ".svn" EXCLUDE
+#  )
 
 
 
