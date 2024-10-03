@@ -80,7 +80,7 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "wrist_orientation_node");
     ros::NodeHandle n;
 
-    char* port_name; //= "/dev/ttyUSB0"; //argv[1];   // "/dev/ttyUSB0";
+    char* port_name = "/dev/ttyUSB0"; //argv[1];   // "/dev/ttyUSB0";
     int dmxl_id_0 = 1; //atoi(argv[2]); //1;
     int dmxl_id_1 = 2; //atoi(argv[4]); //2;
     int dmxl_id_2 = 3; //atoi(argv[6]); // 3

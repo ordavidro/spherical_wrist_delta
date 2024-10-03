@@ -1,13 +1,3 @@
-/**
- * 1. Launch roscore:
- *      roscore
- * 
- * 3. Launch ControlImu:
- *      rosrun wrist_control ControlImu
- * 
-*/
-
-
 #include <ros/ros.h>
 #include <std_msgs/Int32MultiArray.h>
 #include <std_msgs/Float32.h>
@@ -37,7 +27,7 @@ void pitchCallback(const std_msgs::Float32::ConstPtr& msg) {
 }
 
 // Función para publicar la posición de los motores
-void publishPosition() {
+void publishPosition(ros::Publisher& pub) {
     // Motor 2
     if (motor2.getOperatingMode() != "Position Control") {
         if (motor2.getTorqueState()) {
@@ -63,7 +53,7 @@ int main(int argc, char **argv) {
     ros::init(argc, argv, "wrist_orientation_node");
     ros::NodeHandle n;
 
-    char* port_name_motors; // = "/dev/ttyUSB0"; // Port name for motors
+    char* port_name_motors = "/dev/ttyUSB0"; // Port name for motors
     int dmxl_id_0 = 1; // ID of the first motor
     int dmxl_id_1 = 2; // ID of the second motor
     int dmxl_id_2 = 3; // ID of the third motor
@@ -92,6 +82,9 @@ int main(int argc, char **argv) {
     ros::Subscriber sub_roll = n.subscribe("/roll_angle_topic", 10, rollCallback);
     ros::Subscriber sub_pitch = n.subscribe("/pitch_angle_topic", 10, pitchCallback);
 
+    // Crear un publicador para publicar la posición de los motores
+    ros::Publisher position_pub = n.advertise<std_msgs::Int32MultiArray>("motor_positions", 10);
+
     // Configurar motor 1 en la posición fija
     if (motor1.getOperatingMode() != "Position Control") {
         if (motor1.getTorqueState()) {
@@ -104,7 +97,18 @@ int main(int argc, char **argv) {
 
     while (ros::ok()) {
         ros::spinOnce(); // Procesa las callbacks una vez
-        publishPosition(); // Publica la posición de los motores 2 y 3 basada en las últimas lecturas
+        publishPosition(position_pub); // Publica la posición de los motores 2 y 3 basada en las últimas lecturas
+
+        // Crear un mensaje para publicar las posiciones
+        std_msgs::Int32MultiArray pos_msg;
+        pos_msg.data.push_back(motor1.getPresentPosition());
+        pos_msg.data.push_back(roll_position);
+        pos_msg.data.push_back(yaw_position);
+
+        // Publicar el mensaje
+        position_pub.publish(pos_msg);
+
+        ros::Rate(10).sleep(); // Controlar la frecuencia de publicación
     }
 
     return 0;
