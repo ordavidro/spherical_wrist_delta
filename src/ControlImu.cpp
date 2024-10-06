@@ -36,7 +36,7 @@ void publishPosition(ros::Publisher& pub) {
         motor2.setOperatingMode(dynamixelMotor::POSITION_CONTROL_MODE);
     }
     motor2.setTorqueState(true);
-    motor2.setGoalPosition(roll_position);
+    motor2.setGoalPosition(pitch_position);
 
     // Motor 3
     if (motor3.getOperatingMode() != "Position Control") {
@@ -47,6 +47,15 @@ void publishPosition(ros::Publisher& pub) {
     }
     motor3.setTorqueState(true);
     motor3.setGoalPosition(yaw_position);
+
+    // Crear un mensaje para publicar las posiciones
+    std_msgs::Int32MultiArray pos_msg;
+    pos_msg.data.push_back(motor1.getPresentPosition());
+    pos_msg.data.push_back(motor2.getPresentPosition());
+    pos_msg.data.push_back(motor3.getPresentPosition());
+
+    // Publicar el mensaje
+    pub.publish(pos_msg);
 }
 
 int main(int argc, char **argv) {
@@ -95,20 +104,13 @@ int main(int argc, char **argv) {
     motor1.setTorqueState(true);
     motor1.setGoalPosition(fixed_position);
 
+    ros::Rate loop_rate(10); // Frecuencia de publicación
+
     while (ros::ok()) {
         ros::spinOnce(); // Procesa las callbacks una vez
-        publishPosition(position_pub); // Publica la posición de los motores 2 y 3 basada en las últimas lecturas
+        publishPosition(position_pub); // Publica la posición de los motores basada en las últimas lecturas
 
-        // Crear un mensaje para publicar las posiciones
-        std_msgs::Int32MultiArray pos_msg;
-        pos_msg.data.push_back(motor1.getPresentPosition());
-        pos_msg.data.push_back(roll_position);
-        pos_msg.data.push_back(yaw_position);
-
-        // Publicar el mensaje
-        position_pub.publish(pos_msg);
-
-        ros::Rate(10).sleep(); // Controlar la frecuencia de publicación
+        loop_rate.sleep(); // Controlar la frecuencia de publicación
     }
 
     return 0;

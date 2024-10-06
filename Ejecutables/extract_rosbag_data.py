@@ -1,8 +1,8 @@
 import rosbag
 import csv
 
-bag_file = 'imu_and_motor_positions2.bag'
-csv_file = 'imu_and_motor_positions2.csv'
+bag_file = 'imu_and_motor_positions.bag'
+csv_file = 'imu_and_motor_positions.csv'
 
 topics = ['/roll_angle_topic', '/pitch_angle_topic', '/yaw_angle_topic', '/motor_positions']
 
