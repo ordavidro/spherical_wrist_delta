@@ -1,18 +1,3 @@
-/**
- * Este ejemplo demuestra cómo usar la biblioteca con ROS.
- * En este caso, un nodo de ROS es responsable de verificar permanentemente un tema 'user_position_input'
- * y cambiar la posición de los DMXLs si hay alguna información en el tema.
- * 
- * 1. Iniciar roscore:
- *      roscore
- * 
- * 2. Iniciar testPositionControl:
- *      rosrun dynamixel_ros_library ControlTopic
- * 
- * 3. Publicar cualquier posición entre 0 y 360 grados en el tema creado:
- *      rostopic pub -1 /user_position_input std_msgs/Int32MultiArray "data: [-, -, -]"
- */
-
 #include <ros/ros.h>
 #include <std_msgs/Int32MultiArray.h>
 #include <dynamixel_ros_library.h>
@@ -21,6 +6,19 @@
 dynamixelMotor motor1;
 dynamixelMotor motor2;
 dynamixelMotor motor3;
+
+ros::Publisher position_pub; // Declaración global
+
+// Función para publicar la posición de los motores
+void publishPosition() {
+    // Publicar las posiciones actuales de los motores
+    std_msgs::Int32MultiArray pos_msg;
+    pos_msg.data.push_back(motor1.getPresentPosition());
+    pos_msg.data.push_back(motor2.getPresentPosition());
+    pos_msg.data.push_back(motor3.getPresentPosition());
+
+    position_pub.publish(pos_msg); // Usar la variable global
+}
 
 void positionCallback(const std_msgs::Int32MultiArray::ConstPtr& msg)
 {
@@ -69,17 +67,19 @@ void positionCallback(const std_msgs::Int32MultiArray::ConstPtr& msg)
         motor3.setTorqueState(true);
         motor3.setGoalPosition(position3);
     }
+
+    publishPosition(); // Publicar la posición
 }
 
-// Función para publicar la posición de los motores
-void publishPosition(ros::Publisher& pub) {
-    // Publicar las posiciones actuales de los motores
-    std_msgs::Int32MultiArray pos_msg;
-    pos_msg.data.push_back(motor1.getPresentPosition());
-    pos_msg.data.push_back(motor2.getPresentPosition());
-    pos_msg.data.push_back(motor3.getPresentPosition());
-
-    pub.publish(pos_msg);
+// Función para inicializar motores
+bool initializeMotor(dynamixelMotor& motor, const char* port_name, int id) {
+    motor = dynamixelMotor("motor", id);
+    if (!dynamixelMotor::iniComm(const_cast<char*>(port_name), 2.0, 57600)) { // Uso de const_cast
+        ROS_ERROR("Failed to initialize communication for motor with ID %d", id);
+        return false;
+    }
+    motor.setControlTable();
+    return true;
 }
 
 int main(int argc, char **argv)
@@ -87,54 +87,25 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "wrist_orientation_node");
     ros::NodeHandle n;
 
-    char* port_name = "/dev/ttyUSB0"; 
+    const char* port_name = "/dev/ttyUSB2"; // Aquí no necesitas cambiar nada.
     int dmxl_id_0 = 1; 
     int dmxl_id_1 = 2; 
     int dmxl_id_2 = 3; 
 
-    float protocol_version = 2.0;
-    int baud_rate =  57600;
-
-    // Inicializar motor 1
-    motor1 = dynamixelMotor("motor1", dmxl_id_0);
-    if (!dynamixelMotor::iniComm(port_name, protocol_version, baud_rate)) {
-        ROS_ERROR("Failed to initialize communication for motor1");
+    // Inicializar motores
+    if (!initializeMotor(motor1, port_name, dmxl_id_0) || 
+        !initializeMotor(motor2, port_name, dmxl_id_1) || 
+        !initializeMotor(motor3, port_name, dmxl_id_2)) {
         return -1;
     }
-    motor1.setControlTable();
-
-    // Inicializar motor 2
-    motor2 = dynamixelMotor("motor2", dmxl_id_1);
-    if (!dynamixelMotor::iniComm(port_name, protocol_version, baud_rate)) {
-        ROS_ERROR("Failed to initialize communication for motor2");
-        return -1;
-    }
-    motor2.setControlTable();
-
-    // Inicializar motor 3
-    motor3 = dynamixelMotor("motor3", dmxl_id_2);
-    if (!dynamixelMotor::iniComm(port_name, protocol_version, baud_rate)) {
-        ROS_ERROR("Failed to initialize communication for motor3");
-        return -1;
-    }
-    motor3.setControlTable();
 
     // Suscribirse al topic para recibir las posiciones
     ros::Subscriber sub1 = n.subscribe("user_position_input", 10, positionCallback);
 
     // Crear un publicador para publicar la posición de los motores
-    ros::Publisher position_pub = n.advertise<std_msgs::Int32MultiArray>("motor_positions", 10);
+    position_pub = n.advertise<std_msgs::Int32MultiArray>("motor_positions", 10); // Inicialización correcta
 
-    // Mantener el nodo en ejecución y publicar las posiciones periódicamente
-    ros::Rate loop_rate(10); // Frecuencia de publicación
-    while (ros::ok()) {
-        ros::spinOnce(); // Procesa las callbacks una vez
-
-        // Publicar la posición de los motores
-        publishPosition(position_pub);
-
-        loop_rate.sleep(); // Controlar la frecuencia de publicación
-    }
+    ros::spin(); // Iniciar el bucle de ROS
 
     return 0;
 }

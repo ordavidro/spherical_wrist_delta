@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
     ros::init(argc, argv, "wrist_orientation_node");
     ros::NodeHandle n;
 
-    char* port_name_motors = "/dev/ttyUSB0"; // Port name for motors
+    char* port_name_motors = "/dev/ttyUSB2"; // Port name for motors
     int dmxl_id_0 = 1; // ID of the first motor
     int dmxl_id_1 = 2; // ID of the second motor
     int dmxl_id_2 = 3; // ID of the third motor

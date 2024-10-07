@@ -1,12 +1,12 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3 
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Cargar los datos del archivo Excel
+# Cargar los datos del archivo CSV
 try:
-    data = pd.read_excel('imu_and_motor_positions.xlsx', engine='openpyxl')  # Asegúrate de que la extensión sea .xlsx
+    data = pd.read_csv('imu_and_motor_positions.csv')  # Cambiar a .csv
 except Exception as e:
-    print(f'Error al leer el archivo Excel: {e}')
+    print(f'Error al leer el archivo CSV: {e}')
     exit()
 
 # Separar los datos por topics
@@ -23,25 +23,28 @@ imu_data_yaw['data'] = imu_data_yaw['data'].astype(float)
 # Procesar los datos de motor
 motor_data[['motor1', 'motor2', 'motor3']] = motor_data['data'].str.split(',', expand=True).astype(float)
 
+# Obtener el primer timestamp y restarlo a toda la columna
+first_timestamp = motor_data['timestamp'].values[0]
+motor_data['timestamp'] -= first_timestamp
+imu_data_roll['timestamp'] -= first_timestamp
+imu_data_pitch['timestamp'] -= first_timestamp
+imu_data_yaw['timestamp'] -= first_timestamp
+
 # Definir la duración total
 duracion = 15  # Duración total en segundos
-tiempo_inicio = motor_data['timestamp'].values[0]  # Obtener el primer timestamp
-
-# Calcular el tiempo de fin
-tiempo_fin = tiempo_inicio + duracion
+tiempo_fin = motor_data['timestamp'].values[0] + duracion  # Obtener el primer timestamp
 
 # Filtrar los datos para que solo contengan valores dentro del rango de tiempo
-motor_data = motor_data[(motor_data['timestamp'] >= tiempo_inicio) & (motor_data['timestamp'] <= tiempo_fin)]
-imu_data_roll = imu_data_roll[(imu_data_roll['timestamp'] >= tiempo_inicio) & (imu_data_roll['timestamp'] <= tiempo_fin)]
-imu_data_pitch = imu_data_pitch[(imu_data_pitch['timestamp'] >= tiempo_inicio) & (imu_data_pitch['timestamp'] <= tiempo_fin)]
-imu_data_yaw = imu_data_yaw[(imu_data_yaw['timestamp'] >= tiempo_inicio) & (imu_data_yaw['timestamp'] <= tiempo_fin)]
+motor_data = motor_data[(motor_data['timestamp'] >= 0) & (motor_data['timestamp'] <= duracion)]
+imu_data_roll = imu_data_roll[(imu_data_roll['timestamp'] >= 0) & (imu_data_roll['timestamp'] <= duracion)]
+imu_data_pitch = imu_data_pitch[(imu_data_pitch['timestamp'] >= 0) & (imu_data_pitch['timestamp'] <= duracion)]
+imu_data_yaw = imu_data_yaw[(imu_data_yaw['timestamp'] >= 0) & (imu_data_yaw['timestamp'] <= duracion)]
 
 # Graficar los datos
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(10, 6)) 
 
 # Graficar los datos de los motores
 plt.subplot(2, 1, 1)
-#plt.plot(motor_data['timestamp'].values, motor_data['motor1'].values, label='Motor 1', color='blue')
 plt.plot(motor_data['timestamp'].values, motor_data['motor2'].values, label='Motor 2', color='orange')
 plt.plot(motor_data['timestamp'].values, motor_data['motor3'].values, label='Motor 3', color='green')
 plt.xlabel('Timestamp (s)')
@@ -51,7 +54,6 @@ plt.legend()
 
 # Graficar los datos de la IMU
 plt.subplot(2, 1, 2)
-#plt.plot(imu_data_roll['timestamp'].values, imu_data_roll['data'].values, label='Roll', color='red')
 plt.plot(imu_data_pitch['timestamp'].values, imu_data_pitch['data'].values, label='Pitch', color='purple')
 plt.plot(imu_data_yaw['timestamp'].values, imu_data_yaw['data'].values, label='Yaw', color='brown')
 plt.xlabel('Timestamp (s)')
