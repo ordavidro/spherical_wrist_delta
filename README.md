@@ -7,6 +7,7 @@ Este proyecto se centra en el diseño y control de una muñeca esférica de 3 gr
 - [Instalación](#instalación)
 - [Uso](#uso)
 - [Características](#características)
+- [Archivos relevantes](#archivosrelevantes)
 - [Contribuyendo](#contribuyendo)
 - [Licencia](#licencia)
 - [Contacto](#contacto)
@@ -33,7 +34,7 @@ Para comenzar a usar este proyecto, sigue estos pasos:
 
 ## **Uso**
 
-Para usar el paquete en tu proyecto, sigue estos pasos:
+Para usar el paquete `wrist_control` en tu proyecto, sigue estos pasos:
 
 Incluye el paquete en los archivos CMakeLists.txt y package.xml de tu proyecto.
 
@@ -45,6 +46,13 @@ El paquete es compatible con cualquier muñeca esférica que utilice motores Dyn
 Incluye dos nodos ejecutables:
 Un nodo para controlar la orientación de la muñeca, que publica los ángulos a través de un topic.
 Un nodo que utiliza una IMU para simular los datos de orientación de un dron, útil para pruebas y simulaciones.
+
+## **Archivos relevantes**
+Las piezas 3D necesarias para llevar a cabo el proyecto son las que se encuentran en el enlace siguiente:
+https://cad.onshape.com/documents/9ad6410560d7086e439d3ae4/w/332d9191d54ccc6305ac0142/e/971d877ac6bf91d9d6d75e69
+
+Si no se pudiera abrir el archivo están los planos en la carpeta 'Planos piezas 3D'.
+Además, está la memoria donde detalla todo el proyecto llevado a cabo para quien quiera más detalles además del código software.
 
 ## Contribuyentes
 
