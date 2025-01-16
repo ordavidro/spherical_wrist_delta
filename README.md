@@ -1,8 +1,8 @@
-# Nombre del Proyecto
+# **Descripción del Proyecto**
 
-Este proyecto se centra en el diseño y control de una muñeca de 3 grados de libertad (GDL) que proporciona a un brazo delta los grados de libertad necesarios para controlar su orientación. El código utilizado para controlar los motores se encuentra en el paquete `wrist_control`.
+Este proyecto se centra en el diseño y control de una muñeca esférica de 3 grados de libertad (GDL) para un brazo delta. El objetivo es proporcionar a este brazo los grados de libertad necesarios para controlar su orientación. Este repositorio contiene el código de control de motores y otras funcionalidades relacionadas con la muñeca esférica, mientras que la parte de desarrollo 3D y experimentación se encuentra separada en otros repositorios o documentos.
 
-## Tabla de Contenidos
+## **Tabla de Contenidos**
 
 - [Instalación](#instalación)
 - [Uso](#uso)
@@ -11,33 +11,47 @@ Este proyecto se centra en el diseño y control de una muñeca de 3 grados de li
 - [Licencia](#licencia)
 - [Contacto](#contacto)
 
-## Instalación
+## **Instalación**
 
-Hay que seguir los siguientes pasos:
-1. Instalar la librería de los motores dynamixel SDK siguiendo los pasos descritos en el siguiente enlace https://github.com/TaISLab/dynamixel_ros_library.git
+Para comenzar a usar este proyecto, sigue estos pasos:
 
-2. Clonar el repositorio actual:
-git clone https: https://github.com/Robotics-Mechatronics-UMA/spherical_wrist_delta.git
+1. **Instalar la librería de motores Dynamixel SDK:**  
+   Sigue las instrucciones detalladas en el siguiente enlace para instalar la librería necesaria:  
+   [Dynamixel ROS Library](https://github.com/TaISLab/dynamixel_ros_library.git).
 
-3. Compilar las dependencias
-catkin_make
+2. **Clonar el repositorio:**  
+   Clona este repositorio para obtener el código:
+   git clone https://github.com/Robotics-Mechatronics-UMA/spherical_wrist_delta.git
 
-4. Cargar el setup file:
+4. Compilar las dependencias:
+   Después de clonar el repositorio, compila las dependencias usando el comando:
+   catkin_make
+
+6. Cargar el archivo de configuración:
+   Carga el setup file para configurar el entorno de trabajo:
    source devel/setup.bash
 
-## Uso
-Para usar la librería en el proyecto, incluyelo en los archivos CMakeList.txt y en el package.xml
+## **Uso**
 
-Después de los cambios podemos usar las funcionalidade implementadas en la librería en nuestro proyecto. 
+Para usar el paquete en tu proyecto, sigue estos pasos:
 
-## Características
-El paquete puede usarse con cualquier muñeca esférica que use motores dynamixel siempre y cuando se tenga en cuenta que debe de ser Roll-Pitch-Yaw.
-El paquete incluye dos nodos ejecutables en el src. Uno el cuál sirve para controlar la orientación de la muñeca mediante la publicación de los ángulos mediante un topic y el otro utiliza una IMU para simular los datos de orientación de un dron.
+Incluye el paquete en los archivos CMakeLists.txt y package.xml de tu proyecto.
+
+Después de hacer los cambios necesarios, podrás usar las funcionalidades implementadas en este paquete. Este paquete se integra con otros módulos de control para proporcionar una solución completa para el control de la muñeca esférica.
+
+## **Características**
+
+El paquete es compatible con cualquier muñeca esférica que utilice motores Dynamixel, siempre que se siga el formato de orientación Roll-Pitch-Yaw.
+Incluye dos nodos ejecutables:
+Un nodo para controlar la orientación de la muñeca, que publica los ángulos a través de un topic.
+Un nodo que utiliza una IMU para simular los datos de orientación de un dron, útil para pruebas y simulaciones.
+
 ## Contribuyentes
 
 ## Licencia
 
-## Contacto
-Si tienes alguna pregunta o deseas más información, no dudes en contactarme:
+## **Contacto**
 
-- David Rodríguez - [ordajuegos@gmail.com](mailto:ordajuegos@gmail.com) 
+Si tienes alguna pregunta o deseas más información sobre el proyecto, no dudes en contactarme:
+
+Correo electrónico: [ordavidro@gmail.com](mailto:ordavidro@gmail.com) 
